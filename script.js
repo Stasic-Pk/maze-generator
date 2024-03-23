@@ -4,72 +4,63 @@ var ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let special = []
+let passage = []
+let wall = []
 let cells = []
-const size = 50
+const size = 25
+const mazeSize = 25
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-for (let y = 0; y < 10; y++) {
-  for (let x = 0; x < 10; x++) {
+for (y = 0; y < mazeSize; y++) {
+  for (x = 0; x < mazeSize; x++) {
     cells.push({
-      top: randomInt(2),
-      bottom: randomInt(2),
-      right: randomInt(2),
-      left: randomInt(2),
+      wall: 1,
+      passage: 0,
+      special: 0,
       x: x,
       y: y
     })
   }
 }
 
-// function sort(arr) {
-//   for (let i = 0; i < arr.length; i++) {
-//     if (cells[i].y == 0) {
-//       return cells[i].top = 0
-//     }
-//     if (cells[i].y == 9) {
-//       return cells[i].bottom = 0
-//     }
-//     if (cells[i].x == 0) {
-//       return cells[i].left = 0
-//     }
-//     if (cells[i].x == 9) {
-//       return cells[i].right = 0
-//     }
-//   }
-// }
-
-function paint(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].left == 1) {
-      ctx.beginPath()
-      ctx.moveTo(arr[i].x * size, arr[i].y * size)
-      ctx.lineTo(arr[i].x * size, arr[i].y * size - size)
-      ctx.stroke()
-    }
-    if (arr[i].right == 1) {
-      ctx.beginPath()
-      ctx.moveTo(arr[i].x * size + size, arr[i].y * size)
-      ctx.lineTo(arr[i].x * size + size, arr[i].y * size - size)
-      ctx.stroke()
-    }
-
-    if (arr[i].top == 1) {
-      ctx.beginPath()
-      ctx.moveTo(arr[i].x * size, arr[i].y * size)
-      ctx.lineTo(arr[i].x * size - size, arr[i].y * size)
-      ctx.stroke()
-    }
-    if (arr[i].bottom == 1) {
-      ctx.beginPath()
-      ctx.moveTo(arr[i].x * size, arr[i].y * size + size)
-      ctx.lineTo(arr[i].x * size - size, arr[i].y * size + size)
-      ctx.stroke()
+function sort(arr) {
+  for (i = 0; i < arr.length; i++) {
+    if (cells[i].wall = 1) {
+      wall[i].push(cells[i])
+    } else if (cells[i].passage = 1) {
+      wall[i].push(cells[i])
+    } else if (cells[i].special = 1) {
+      wall[i].push(cells[i])
     }
   }
-  console.log(arr)
+}
+
+function generate(arr) {
+  arr[0].wall = 0
+  arr[0].passage = 1
+  for (i = 0; i < arr.length; i++) {
+    if (arr[i] ) {
+
+    }
+  }
+}
+
+generate(cells)
+
+function paint(arr) {
+  for (i = 0; i < cells.length; i++) {
+    if (cells[i].wall == 1) {
+      ctx.fillStyle = 'black'
+      ctx.fillRect(cells[i].x * size, cells[i].y * size, size, size)
+    } else if(cells[i].passage == 1) {
+      ctx.fillStyle = 'white'
+      ctx.fillRect(cells[i].x * size, cells[i].y * size, size, size)
+    }
+  }
 }
 
 paint(cells)
