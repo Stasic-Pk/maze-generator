@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let special = []
-let passage = []
+let path = []
 let wall = []
 let cells = []
 const size = 25
@@ -19,29 +19,24 @@ for (y = 0; y < mazeSize; y++) {
   for (x = 0; x < mazeSize; x++) {
     cells.push({
       wall: 1,
-      passage: 0,
+      path: 0,
       special: 0,
       x: x,
-      y: y
+      y: y,
+      index: x + y * mazeSize
     })
   }
 }
 
 function sort(arr) {
-  for (i = 0; i < arr.length; i++) {
-    if (cells[i].wall = 1) {
-      wall[i].push(cells[i])
-    } else if (cells[i].passage = 1) {
-      wall[i].push(cells[i])
-    } else if (cells[i].special = 1) {
-      wall[i].push(cells[i])
-    }
-  }
+
 }
+
+sort(cells)
 
 function generate(arr) {
   arr[0].wall = 0
-  arr[0].passage = 1
+  arr[0].path = 1
   for (i = 0; i < arr.length; i++) {
     if (arr[i] ) {
 
@@ -56,7 +51,7 @@ function paint(arr) {
     if (cells[i].wall == 1) {
       ctx.fillStyle = 'black'
       ctx.fillRect(cells[i].x * size, cells[i].y * size, size, size)
-    } else if(cells[i].passage == 1) {
+    } else if(cells[i].path == 1) {
       ctx.fillStyle = 'white'
       ctx.fillRect(cells[i].x * size, cells[i].y * size, size, size)
     }
