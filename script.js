@@ -28,12 +28,6 @@ for (y = 0; y < mazeSize; y++) {
   }
 }
 
-function sort(arr) {
-
-}
-
-sort(cells)
-
 function generate(arr) {
   arr[0].wall = 0
   arr[0].path = 1
@@ -57,5 +51,7 @@ function paint(arr) {
     }
   }
 }
+
+console.log(special, wall, path, cells)
 
 paint(cells)
