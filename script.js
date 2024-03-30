@@ -5,8 +5,6 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let special = []
-let path = []
-let wall = []
 let cells = []
 const size = 25
 const mazeSize = 15
@@ -35,35 +33,42 @@ cells[0][0].path = 1
 function generate(array) {
   for (i = 0; i < mazeSize; i++) {
     for (let j = 0; j < mazeSize; j++) {
-      if (cells[i][j].path == 1 || cells[i][j + 2].path != 1  || cells[i + 2][j].path != 1 ) {
-        if (ells[i][j + 2].path != 1) {
-          cells[i + 2][j].wall = 0
-          // cells[i + 2][j].special = 1
-          special.push(cells[i + 2][j])
+      if (array[i][j].path == 1) {
+        if (array[i][j + 2] != null && array[i][j + 2].path != 1) {
+          array[i][j + 2].wall = 0
+          special.push(array[i][j + 2])
         }
-        if (ells[i + 2][j].path != 1) {
-          cells[i][j + 2].wall = 0
-          // cells[i][j + 2].special = 1
-          special.push(cells[i][j + 2])
+        if (array[i + 2][j] != null && array[i + 2][j].path != 1) {
+          array[i + 2][j].wall = 0
+          special.push(array[i + 2][j])
         }
       }
     }
   }
 
   let randomSpecial = randomInt(special.length)
+  
+  for (i = 0; i < mazeSize; i++) {
+    for (j = 0; j < mazeSize; j++) {
+      if (array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
+        array[i][j] = special[randomSpecial]
+        array[i][j].path = 1
+        // special[randomSpecial] = null
+      }
+    }
+  }
 
-  //
   
   if (special.length <= 0) {
     return array
   } else {
-    special = []
+    special.splice(0, special.length)
   }
-
   return generate(array)
 }
 
 generate(cells)
+
 
 function paint(array) {
   for (i = 0; i < mazeSize; i++) {
@@ -79,6 +84,6 @@ function paint(array) {
   }
 }
 
-console.log(special, wall, path, cells)
+console.log(special, cells)
 
 paint(cells)
