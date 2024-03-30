@@ -7,7 +7,7 @@ canvas.height = window.innerHeight;
 let special = []
 let cells = []
 const size = 25
-const mazeSize = 5
+const mazeSize = 15
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
@@ -35,11 +35,11 @@ function generate(array) {
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
       if (array[i][j].path == 1) {
-        if (array[i][j + 2] != undefined && array[i][j + 2].wall == 1) {
+        if (array[i][j + 2] != undefined && array[i][j + 2].path != 1) {
           array[i][j + 2].wall = 0
           special.push(array[i][j + 2])
         }
-        if (array[i + 2][j] != undefined && array[i + 2][j].wall == 1) {
+        if (array[i + 2] != undefined && array[i + 2][j].path != 1) {
           array[i + 2][j].wall = 0
           special.push(array[i + 2][j])
         }
@@ -50,10 +50,13 @@ function generate(array) {
   //random special to path
 
   let randomSpecial = randomInt(special.length)
-  
+
+      console.log(randomSpecial)
+      console.log(special.length, "length")
+      
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
-      if (array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
+      if (special.length != 0 && array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
         array[i][j] = special[randomSpecial]
         array[i][j].path = 1
       }
@@ -62,16 +65,14 @@ function generate(array) {
 
   //recursive
 
-  if (special.length <= 0) {
+  if (special.length == 0) {
     return array
   } else {
     special.splice(0, special.length)
   }
-  // return generate(array)
+  return generate(array)
 }
 
-generate(cells)
-generate(cells)
 generate(cells)
 
 
