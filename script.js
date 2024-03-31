@@ -7,8 +7,16 @@ canvas.height = window.innerHeight;
 const pathDelta = []
 const special = []
 const cells = []
-const size = 5
-const mazeSize = 125
+const size = 3
+let mazeSize
+
+if (window.innerWidth > window.innerHeight) {
+  mazeSize = Math.round(window.innerWidth / window.innerHeight * size)
+} else {
+  mazeSize = Math.round(window.innerHeight / window.innerWidth * size)
+}
+const width = window.innerWidth / mazeSize
+const height = window.innerHeight / mazeSize
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
@@ -17,9 +25,9 @@ function randomInt(max) {
 
 function create() {
   //i=y j=x
-  for (i = 0; i < mazeSize; i++) {
+  for (i = 0; i < height; i++) {
     cells[i] = []
-    for (j = 0; j < mazeSize; j++) {
+    for (j = 0; j < width; j++) {
       cells[i][j] = {
         wall: 1,
         path: 0,
@@ -29,8 +37,8 @@ function create() {
       }
     }
   }
-  cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].wall = 0
-  cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].path = 1
+  cells[Math.floor(height / 2)][Math.floor(width / 2)].wall = 0
+  cells[Math.floor(height / 2)][Math.floor(width / 2)].path = 1
 }
 create()
 
@@ -38,8 +46,8 @@ create()
 function generate(array) {
   //generate all special
 
-  for (i = 0; i < mazeSize; i++) {
-    for (j = 0; j < mazeSize; j++) {
+  for (i = 0; i < height; i++) {
+    for (j = 0; j < width; j++) {
       if (array[i][j].path == 1) {
         if (array[i][j + 2] != undefined && array[i][j + 2].path != 1 && array[i][j + 2].pathDelta != 1) {
           array[i][j + 2].wall = 0
@@ -65,8 +73,8 @@ function generate(array) {
 
   let randomSpecial = randomInt(special.length)
       
-  for (i = 0; i < mazeSize; i++) {
-    for (j = 0; j < mazeSize; j++) {
+  for (i = 0; i < height; i++) {
+    for (j = 0; j < width; j++) {
       if (special.length != 0 && array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
         array[i][j] = special[randomSpecial]
         array[i][j].path = 1
@@ -105,14 +113,14 @@ function generate(array) {
 function paint(array) {
   ctx.fillStyle = 'white'
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
-  for (i = 0; i < mazeSize; i++) {
-    for (j = 0; j < mazeSize; j++) {
+  for (i = 0; i < height; i++) {
+    for (j = 0; j < width; j++) {
       if (array[i][j].wall == 1 || array[i][j].path == 0 && array[i][j].wall == 0 && array[i][j].pathDelta == 0) {
         ctx.fillStyle = 'black'
-        ctx.fillRect(array[i][j].x * size, array[i][j].y * size, size, size)
+        ctx.fillRect(array[i][j].x * mazeSize, array[i][j].y * mazeSize, mazeSize, mazeSize)
       } else {
         ctx.fillStyle = 'white'
-        ctx.fillRect(array[i][j].x * size, array[i][j].y * size, size, size)
+        ctx.fillRect(array[i][j].x * mazeSize, array[i][j].y * mazeSize, mazeSize, mazeSize)
       }
     }
   }
