@@ -6,8 +6,8 @@ canvas.height = window.innerHeight;
 
 let special = []
 let cells = []
-const size = 25
-const mazeSize = 15
+const size = 10
+const mazeSize = 67
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
@@ -20,14 +20,15 @@ for (i = 0; i < mazeSize; i++) {
     cells[i][j] = {
       wall: 1,
       path: 0,
+      pathDelta: 0,
       x: j,
       y: i,
     }
   }
 }
 
-cells[0][0].wall = 0
-cells[0][0].path = 1
+cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].wall = 0
+cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].path = 1
 
 function generate(array) {
   //generate all special
@@ -35,13 +36,21 @@ function generate(array) {
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
       if (array[i][j].path == 1) {
-        if (array[i][j + 2] != undefined && array[i][j + 2].path != 1) {
+        if (array[i][j + 2] != undefined && array[i][j + 2].path != 1 && array[i][j + 2].pathDelta != 1) {
           array[i][j + 2].wall = 0
           special.push(array[i][j + 2])
         }
-        if (array[i + 2] != undefined && array[i + 2][j].path != 1) {
+        if (array[i + 2] != undefined && array[i + 2][j].path != 1 && array[i + 2][j].pathDelta != 1) {
           array[i + 2][j].wall = 0
           special.push(array[i + 2][j])
+        }
+        if (array[i][j - 2] != undefined && array[i][j - 2].path != 1 && array[i][j - 2].pathDelta != 1) {
+          array[i][j - 2].wall = 0
+          special.push(array[i][j - 2])
+        }
+        if (array[i - 2] != undefined && array[i - 2][j].path != 1 && array[i - 2][j].pathDelta != 1) {
+          array[i - 2][j].wall = 0
+          special.push(array[i - 2][j])
         }
       }
     }
@@ -50,15 +59,29 @@ function generate(array) {
   //random special to path
 
   let randomSpecial = randomInt(special.length)
-
-      console.log(randomSpecial)
-      console.log(special.length, "length")
       
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
       if (special.length != 0 && array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
         array[i][j] = special[randomSpecial]
         array[i][j].path = 1
+
+        let randomDirection = randomInt(3)
+        if (array[i][j + 2] != undefined && array[i][j + 2].path == 1) {
+          array[i][j + 1].pathDelta = 1
+          array[i][j + 1].wall = 0
+        } else if (array[i + 2] != undefined && array[i + 2][j].path == 1) {
+          array[i + 1][j].pathDelta = 1
+          array[i + 1][j].wall = 0
+        } else if (array[i][j - 2] != undefined && array[i][j - 2].path == 1) {
+          array[i][j - 1].pathDelta = 1
+          array[i][j - 1].wall = 0
+        } else if (array[i - 2] != undefined) {
+          array[i - 1][j].pathDelta = 1
+          array[i - 1][j].wall = 0
+        } else {
+
+        }
       }
     }
   }
@@ -73,13 +96,12 @@ function generate(array) {
   return generate(array)
 }
 
-generate(cells)
-
-
 function paint(array) {
+  ctx.fillStyle = 'white'
+  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
-      if (array[i][j].wall == 1) {
+      if (array[i][j].wall == 1 || array[i][j].path == 0 && array[i][j].wall == 0 & array[i][j].pathDelta == 0) {
         ctx.fillStyle = 'black'
         ctx.fillRect(array[i][j].x * size, array[i][j].y * size, size, size)
       } else {
@@ -90,6 +112,8 @@ function paint(array) {
   }
 }
 
-console.log(special, cells)
 
-paint(cells)
+addEventListener('mousedown', function start() {
+  generate(cells)
+  paint(cells)
+})
