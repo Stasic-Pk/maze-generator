@@ -4,8 +4,9 @@ var ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let special = []
-let cells = []
+// const pathDelta = []
+const special = []
+const cells = []
 const size = 10
 const mazeSize = 67
 
@@ -79,8 +80,6 @@ function generate(array) {
         } else if (array[i - 2] != undefined) {
           array[i - 1][j].pathDelta = 1
           array[i - 1][j].wall = 0
-        } else {
-
         }
       }
     }
@@ -101,7 +100,7 @@ function paint(array) {
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
   for (i = 0; i < mazeSize; i++) {
     for (j = 0; j < mazeSize; j++) {
-      if (array[i][j].wall == 1 || array[i][j].path == 0 && array[i][j].wall == 0 & array[i][j].pathDelta == 0) {
+      if (array[i][j].wall == 1 || array[i][j].path == 0 && array[i][j].wall == 0 && array[i][j].pathDelta == 0) {
         ctx.fillStyle = 'black'
         ctx.fillRect(array[i][j].x * size, array[i][j].y * size, size, size)
       } else {
