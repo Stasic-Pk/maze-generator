@@ -7,29 +7,33 @@ canvas.height = window.innerHeight;
 const pathDelta = []
 const special = []
 const cells = []
-const size = 10
-const mazeSize = 67
+const size = 5
+const mazeSize = 125
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-//i=y j=x
-for (i = 0; i < mazeSize; i++) {
-  cells[i] = []
-  for (j = 0; j < mazeSize; j++) {
-    cells[i][j] = {
-      wall: 1,
-      path: 0,
-      pathDelta: 0,
-      x: j,
-      y: i,
+
+function create() {
+  //i=y j=x
+  for (i = 0; i < mazeSize; i++) {
+    cells[i] = []
+    for (j = 0; j < mazeSize; j++) {
+      cells[i][j] = {
+        wall: 1,
+        path: 0,
+        pathDelta: 0,
+        x: j,
+        y: i,
+      }
     }
   }
+  cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].wall = 0
+  cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].path = 1
 }
+create()
 
-cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].wall = 0
-cells[Math.floor(mazeSize / 2)][Math.floor(mazeSize / 2)].path = 1
 
 function generate(array) {
   //generate all special
@@ -83,6 +87,7 @@ function generate(array) {
 
         pathDelta[randomDirection].pathDelta = 1
         pathDelta[randomDirection].wall = 0
+        pathDelta.splice(0, pathDelta.length)
       }
     }
   }
@@ -94,7 +99,7 @@ function generate(array) {
   } else {
     special.splice(0, special.length)
   }
-  return generate(array)
+  // return generate(array)
 }
 
 function paint(array) {
