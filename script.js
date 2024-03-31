@@ -4,7 +4,7 @@ var ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// const pathDelta = []
+const pathDelta = []
 const special = []
 const cells = []
 const size = 10
@@ -67,20 +67,22 @@ function generate(array) {
         array[i][j] = special[randomSpecial]
         array[i][j].path = 1
 
-        let randomDirection = randomInt(3)
         if (array[i][j + 2] != undefined && array[i][j + 2].path == 1) {
-          array[i][j + 1].pathDelta = 1
-          array[i][j + 1].wall = 0
-        } else if (array[i + 2] != undefined && array[i + 2][j].path == 1) {
-          array[i + 1][j].pathDelta = 1
-          array[i + 1][j].wall = 0
-        } else if (array[i][j - 2] != undefined && array[i][j - 2].path == 1) {
-          array[i][j - 1].pathDelta = 1
-          array[i][j - 1].wall = 0
-        } else if (array[i - 2] != undefined) {
-          array[i - 1][j].pathDelta = 1
-          array[i - 1][j].wall = 0
+          pathDelta.push(array[i][j + 1])
         }
+        if (array[i + 2] != undefined && array[i + 2][j].path == 1) {
+          pathDelta.push(array[i + 1][j])
+        }
+        if (array[i][j - 2] != undefined && array[i][j - 2].path == 1) {
+          pathDelta.push(array[i][j - 1])
+        }
+        if (array[i - 2] != undefined && array[i - 2][j].path == 1) {
+          pathDelta.push(array[i - 1][j])
+        }
+        let randomDirection = randomInt(pathDelta.length)
+
+        pathDelta[randomDirection].pathDelta = 1
+        pathDelta[randomDirection].wall = 0
       }
     }
   }
