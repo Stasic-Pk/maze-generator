@@ -7,7 +7,7 @@ canvas.height = window.innerHeight;
 const pathDelta = []
 const special = []
 const cells = []
-const size = 3
+const size = 4
 let mazeSize
 
 if (window.innerWidth > window.innerHeight) {
@@ -15,8 +15,8 @@ if (window.innerWidth > window.innerHeight) {
 } else {
   mazeSize = Math.round(window.innerHeight / window.innerWidth * size)
 }
-const width = window.innerWidth / mazeSize
-const height = window.innerHeight / mazeSize
+const width = Math.round(window.innerWidth / mazeSize)
+const height = Math.round(window.innerHeight / mazeSize)
 
 function randomInt(max) {
   return Math.floor(Math.random() * max);
@@ -107,7 +107,8 @@ function generate(array) {
   } else {
     special.splice(0, special.length)
   }
-  // return generate(array)
+  // generate to 1 click
+  // return generate(array) 
 }
 
 function paint(array) {
