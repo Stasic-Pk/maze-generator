@@ -24,7 +24,6 @@ function randomInt(max) {
 
 
 function create() {
-  //i=y j=x
   for (i = 0; i < height; i++) {
     cells[i] = []
     for (j = 0; j < width; j++) {
@@ -76,8 +75,7 @@ function generate(array) {
   for (i = 0; i < height; i++) {
     for (j = 0; j < width; j++) {
       if (special.length != 0 && array[i][j].x == special[randomSpecial].x && array[i][j].y == special[randomSpecial].y) {
-        array[i][j] = special[randomSpecial]
-        array[i][j].path = 1
+        special[randomSpecial].path = 1
 
         if (array[i][j + 2] != undefined && array[i][j + 2].path == 1) {
           pathDelta.push(array[i][j + 1])
@@ -103,12 +101,12 @@ function generate(array) {
   //recursive
 
   if (special.length == 0) {
-    return array
+    return console.log("generated!")
   } else {
     special.splice(0, special.length)
   }
-  // generate to 1 click
-  // return generate(array) 
+  // generate in 1 click
+  return generate(array) 
 }
 
 function paint(array) {
